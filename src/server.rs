@@ -22,7 +22,7 @@ impl Server {
                         Ok(_) => {
                             print!("Received a request: {}", String::from_utf8_lossy(&buffer));
                             match Request::try_from(&buffer[..]) {
-                                Ok(request) => {
+                                Ok(_request) => {
                                     unimplemented!()
                                 }
                                 Err(e) => {

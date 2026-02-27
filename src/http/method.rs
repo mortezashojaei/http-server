@@ -1,5 +1,6 @@
 use std::str::FromStr;
 
+#[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Method {
     GET,
     DELETE,
@@ -28,4 +29,27 @@ impl FromStr for Method {
     }
 }
 
+#[derive(Debug)]
 pub struct MethodError;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parses_known_methods() {
+        for (raw, expected) in [
+            ("GET", Method::GET),
+            ("DELETE", Method::DELETE),
+            ("POST", Method::POST),
+            ("PUT", Method::PUT),
+        ] {
+            assert_eq!(raw.parse::<Method>().unwrap(), expected);
+        }
+    }
+
+    #[test]
+    fn rejects_unknown_method() {
+        assert!("FOO".parse::<Method>().is_err());
+    }
+}
