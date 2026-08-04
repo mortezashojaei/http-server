@@ -65,12 +65,12 @@ impl ApiHandler {
 impl Handler for ApiHandler {
     fn handle_request(&mut self, request: &Request) -> Response {
         match (request.method(), request.path()) {
-            (Method::GET, "/api") => Response::json(
+            (Method::GET, "/") | (Method::GET, "/api") => Response::json(
                 StatusCode::Ok,
-                "{\"message\":\"API ready\",\"endpoints\":[\"/api/items?q=&page=1&limit=10\"]}"
+                "{\"message\":\"API ready\",\"endpoints\":[\"/items?q=&page=1&limit=10\"]}"
                     .to_string(),
             ),
-            (Method::GET, "/api/items") => self.list_items(request),
+            (Method::GET, "/items") | (Method::GET, "/api/items") => self.list_items(request),
             _ => Response::new(StatusCode::NotFound, Some("Not Found".to_string())),
         }
     }

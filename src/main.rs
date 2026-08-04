@@ -5,10 +5,15 @@ mod website_handler;
 
 use api_handler::ApiHandler;
 use server::Server;
+use std::thread;
 use website_handler::WebsiteHandler;
 
 fn main() {
-    let server = Server::new("127.0.0.1:8080".to_string());
-    let api = ApiHandler::new("data/items.txt");
-    server.run(WebsiteHandler::new(api));
+    thread::spawn(|| {
+        let server = Server::new("127.0.0.1:8081".to_string());
+        server.run(ApiHandler::new("data/items.txt"));
+    });
+
+    let server = Server::new("127.0.0.1:80".to_string());
+    server.run(WebsiteHandler);
 }
