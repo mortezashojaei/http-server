@@ -1,5 +1,5 @@
-use super::http::{Method, Request, Response, StatusCode};
-use super::server::Handler;
+use crate::http::{Method, Request, Response, StatusCode};
+use crate::server::Handler;
 use std::fs;
 
 pub struct ApiHandler {
@@ -65,12 +65,12 @@ impl ApiHandler {
 impl Handler for ApiHandler {
     fn handle_request(&mut self, request: &Request) -> Response {
         match (request.method(), request.path()) {
-            (Method::GET, "/") | (Method::GET, "/api") => Response::json(
+            (Method::GET, "/") => Response::json(
                 StatusCode::Ok,
                 "{\"message\":\"API ready\",\"endpoints\":[\"/items?q=&page=1&limit=10\"]}"
                     .to_string(),
             ),
-            (Method::GET, "/items") | (Method::GET, "/api/items") => self.list_items(request),
+            (Method::GET, "/items") => self.list_items(request),
             _ => Response::new(StatusCode::NotFound, Some("Not Found".to_string())),
         }
     }

@@ -1,9 +1,23 @@
 # http-server
 
-A tiny Rust HTTP server experiment with two sibling HTTP services:
+A tiny Rust HTTP server. The HTTP stack is separate from the example apps that use it.
 
-- Website on `127.0.0.1:80` (`http://localhost/`)
-- API on `127.0.0.1:8081`
+## Layout
+
+```text
+src/http/       # HTTP types: request, response, method, status, query string
+src/server.rs   # TCP server + Handler trait
+src/example/    # Example apps only (website + API)
+example/data/   # Example fixtures (e.g. items list)
+src/main.rs     # Starts the example apps
+```
+
+## Example apps
+
+| App     | Address                 | Notes                                      |
+|---------|-------------------------|--------------------------------------------|
+| Website | `http://localhost/`     | Port 80                                    |
+| API     | `http://127.0.0.1:8081` | Search/pagination over `example/data/items.txt` |
 
 ## Running locally
 
