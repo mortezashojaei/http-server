@@ -1,4 +1,4 @@
-use crate::http::Request;
+use crate::http::{Request, Response, StatusCode};
 use std::convert::TryFrom;
 use std::io::Read;
 use std::net::TcpListener;
@@ -23,10 +23,23 @@ impl Server {
                             print!("Received a request: {}", String::from_utf8_lossy(&buffer));
                             match Request::try_from(&buffer[..]) {
                                 Ok(_request) => {
-                                    unimplemented!()
+                                    let response = Response::new(
+                                        StatusCode::Ok,
+                                        Some("OK".to_string()),
+                                    );
+                                    if let Err(e) = response.send(&mut stream) {
+                                        println!("Failed to send response: {}", e);
+                                    }
                                 }
                                 Err(e) => {
-                                    println!("{}", e)
+                                    println!("{}", e);
+                                    let response = Response::new(
+                                        StatusCode::BadRequest,
+                                        Some("Bad Request".to_string()),
+                                    );
+                                    if let Err(e) = response.send(&mut stream) {
+                                        println!("Failed to send response: {}", e);
+                                    }
                                 }
                             }
                         }
