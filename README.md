@@ -1,14 +1,39 @@
 # http-server
 
-A tiny Rust HTTP server experiment. Right now it binds to `127.0.0.1:8080` and runs the custom server implementation under `src/server.rs` and `src/http`.
+A tiny Rust HTTP server. The HTTP stack is separate from the example apps that use it.
+
+## Layout
+
+```text
+src/http/       # HTTP types: request, response, method, status, query string
+src/server.rs   # TCP server + Handler trait
+src/example/    # Example apps only (website + API)
+example/data/   # Example fixtures (e.g. items list)
+src/main.rs     # Starts the example apps
+```
+
+## Example apps
+
+| App     | Address                 | Notes                                      |
+|---------|-------------------------|--------------------------------------------|
+| Website | `http://localhost/`     | Port 80                                    |
+| API     | `http://127.0.0.1:8081` | Search/pagination over `example/data/items.txt` |
 
 ## Running locally
 
+Port 80 needs elevated privileges:
+
 ```bash
-cargo run
+sudo cargo run
 ```
 
-That will build the project and start the server. Adjust the bind address in `src/main.rs` if you need to listen on another interface or port.
+Then try:
+
+```bash
+curl http://localhost/
+curl http://localhost/hello
+curl 'http://127.0.0.1:8081/items?q=berry&page=1&limit=2'
+```
 
 ## CI
 

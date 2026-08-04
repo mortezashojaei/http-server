@@ -1,4 +1,5 @@
 use super::method::{Method, MethodError};
+use super::query_string::QueryString;
 use std::{
     convert::TryFrom,
     error::Error,
@@ -11,7 +12,7 @@ use std::{
 #[derive(Debug)]
 pub struct Request<'buf> {
     path: &'buf str,
-    query_string: Option<&'buf str>,
+    query_string: Option<QueryString<'buf>>,
     method: Method,
 }
 
@@ -24,8 +25,8 @@ impl<'buf> Request<'buf> {
         self.method
     }
 
-    pub fn query_string(&self) -> Option<&str> {
-        self.query_string
+    pub fn query_string(&self) -> Option<&QueryString<'buf>> {
+        self.query_string.as_ref()
     }
 }
 
@@ -43,7 +44,7 @@ impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
         let method: Method = method.parse()?;
         let mut query_string = None;
         if let Some(i) = path.find('?') {
-            query_string = Some(&path[i + 1..]);
+            query_string = Some(QueryString::from(&path[i + 1..]));
             path = &path[..i];
         }
 
