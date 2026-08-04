@@ -1,8 +1,11 @@
 mod http;
 mod server;
-//use http::{Method, Request};
+mod website_handler;
+
+use server::Server;
+use website_handler::WebsiteHandler;
 
 fn main() {
-    let server = server::Server::new("127.0.0.1:8080".to_string());
-    server.run()
+    let server = Server::new("127.0.0.1:8080".to_string());
+    server.run(WebsiteHandler);
 }
