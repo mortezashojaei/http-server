@@ -1,1 +1,4 @@
 /target
+
+# Local agent skills (not committed)
+.cursor/skills/
