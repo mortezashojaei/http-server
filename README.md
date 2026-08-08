@@ -16,8 +16,8 @@ src/main.rs     # Starts the example apps
 
 | App     | Address                 | Notes                                      |
 |---------|-------------------------|--------------------------------------------|
-| Website | `http://localhost/`     | Port 80                                    |
-| API     | `http://127.0.0.1:8081` | Search/pagination over `example/data/items.txt` |
+| Website | `http://localhost/`     | Port 80; `POST /echo` returns the request body |
+| API     | `http://127.0.0.1:8081` | `GET /items` search/pagination; `POST /items` adds an item from the body |
 
 ## Running locally
 
@@ -32,7 +32,9 @@ Then try:
 ```bash
 curl http://localhost/
 curl http://localhost/hello
+curl -d 'ping' http://localhost/echo
 curl 'http://127.0.0.1:8081/items?q=berry&page=1&limit=2'
+curl -d 'dragonfruit' http://127.0.0.1:8081/items
 ```
 
 ## CI
